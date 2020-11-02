@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="AirRoll_Limit_Switches" Id="{35ebaa59-a632-436e-9b79-d8f83a56aa48}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM AirRoll_Limit_Switches
+
+VAR
+ 	axisAirRoll: AXIS_REF;
+    fbAxisPowerAirRoll: MC_Power;
+       
+	bEnable: BOOL := TRUE;
+    fOverride: LREAL := 100;
+    		
+	biLimFwd_AirRoll AT %I*: BOOL;
+	biLimBwd_AirRoll AT %I*: BOOL;
+
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbAxisPowerAirRoll(
+    Axis:= axisAirRoll,
+    Enable:= bEnable,
+    Enable_Positive:= biLimFwd_AirRoll, // TRUE, //
+    Enable_Negative:= biLimBwd_AirRoll, // TRUE, //
+    Override:= fOverride,
+    BufferMode:= ,
+    Options:= ,
+    Status=> ,
+    Busy=> ,
+    Active=> ,
+    Error=> ,
+    ErrorID=> );]]></ST>
+    </Implementation>
+    <LineIds Name="AirRoll_Limit_Switches">
+      <LineId Id="19" Count="11" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

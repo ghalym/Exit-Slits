@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="AirPitch_Limit_Switches" Id="{15f000e6-a4fb-4518-b111-5220086eaa58}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM AirPitch_Limit_Switches
+
+VAR
+	
+ 	axisAirPitch: AXIS_REF;
+    fbAxisPowerAirPitch: MC_Power;
+       
+	bEnable: BOOL := TRUE;
+    fOverride: LREAL := 100;
+    		
+	biLimFwd_AirPitch AT %I*: BOOL;
+	biLimBwd_AirPitch AT %I*: BOOL;
+
+
+
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+
+fbAxisPowerAirPitch(
+    Axis:= axisAirPitch,
+    Enable:= bEnable,
+    Enable_Positive:= biLimFwd_AirPitch, // TRUE, //
+    Enable_Negative:= biLimBwd_AirPitch, // TRUE, //
+    Override:= fOverride,
+    BufferMode:= ,
+    Options:= ,
+    Status=> ,
+    Busy=> ,
+    Active=> ,
+    Error=> ,
+    ErrorID=> );]]></ST>
+    </Implementation>
+    <LineIds Name="AirPitch_Limit_Switches">
+      <LineId Id="31" Count="1" />
+      <LineId Id="19" Count="11" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

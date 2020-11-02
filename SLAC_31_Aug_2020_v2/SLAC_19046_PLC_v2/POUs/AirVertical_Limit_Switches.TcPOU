@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="AirVertical_Limit_Switches" Id="{97114625-ac17-4a14-8767-b57581610e25}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM AirVertical_Limit_Switches
+
+VAR
+	
+	axisAirVertical: AXIS_REF;
+    fbAxisPowerAirVertical: MC_Power;
+       
+	bEnable: BOOL := TRUE;
+    fOverride: LREAL := 100;
+    		
+	biLimFwd_AirVertical AT %I*: BOOL;
+	biLimBwd_AirVertical AT %I*: BOOL;
+
+
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+
+fbAxisPowerAirVertical(
+    Axis:= axisAirVertical,
+    Enable:= bEnable,
+    Enable_Positive:= biLimFwd_AirVertical, // TRUE, //
+    Enable_Negative:= biLimBwd_AirVertical, // TRUE, //
+    Override:= fOverride,
+    BufferMode:= ,
+    Options:= ,
+    Status=> ,
+    Busy=> ,
+    Active=> ,
+    Error=> ,
+    ErrorID=> );]]></ST>
+    </Implementation>
+    <LineIds Name="AirVertical_Limit_Switches">
+      <LineId Id="18" Count="13" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

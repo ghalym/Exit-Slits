@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="CrystalGap_Limit_Switches" Id="{de65f84b-133f-43c8-bdf2-651bd5836144}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM CrystalGap_Limit_Switches
+
+VAR
+	
+    axisGAP: AXIS_REF;
+    fbAxisPowerGAP: MC_Power;
+       
+	bEnable: BOOL := TRUE;
+    fOverride: LREAL := 100;
+    		
+	biLimFwd_CrysGap AT %I*: BOOL;
+	biLimBwd_CrysGap AT %I*: BOOL;
+	
+	fbtestGAP:FB_TEST;
+	
+	ftLimFwd :F_TRIG; //detect falling edge on the limit switch
+	
+	ftLimBwd :F_TRIG;
+	
+	rActPosLimFwd:REAL; //save the actual motor position
+	rActPosLimBwd:REAL;
+	
+	rSetPosLimFwd:REAL; //save the set motor position
+	rSetPosLimBwd:REAL;
+
+// Stuff for testing cage deflection 			
+
+	biLimFwd_AirPitch AT %I*: BOOL;
+	biLimBwd_AirPitch AT %I*: BOOL;
+	
+	ftLimFwd_AirPitch :F_TRIG; //detect falling edge on the limit switch
+	ftLimBwd_AirPitch :F_TRIG;
+	
+	rActPosLimFwd_AirPitch:REAL; //save the actual motor position
+	rActPosLimBwd_AirPitch:REAL;
+	
+	rSetPosLimFwd_AirPitch:REAL; //save the set motor position
+	rSetPosLimBwd_AirPitch:REAL;
+		
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+
+fbAxisPowerGAP(
+    Axis:= axisGAP,
+    Enable:= bEnable,
+    Enable_Positive:= biLimFwd_CrysGap, //biLimFwd_CrysGap, //  // biLimFwd_CrysGap, // TRUE, //
+    Enable_Negative:= biLimBwd_CrysGap, // TRUE, //
+    Override:= fOverride,
+    BufferMode:= ,
+    Options:= ,
+    Status=> ,
+    Busy=> ,
+    Active=> ,
+    Error=> ,
+    ErrorID=> );
+	
+	
+//fbtestGAP(axis := axisGAP, fbAxisPower:=fbAxisPowerGAP);
+
+ftLimFWd(CLK:= biLimFwd_CrysGap);
+ftLimBwd(CLK:= biLimBwd_CrysGap);
+
+
+IF (ftLimFwd.Q) THEN
+	rActPosLimFwd := axisGAP.NcToPlc.ActPos ;
+	rSetPosLimFwd := axisGap.NcToPlc.SetPos;
+END_IF
+
+IF (ftLimBwd.Q) THEN
+	rActPosLimBwd := axisGAP.NcToPlc.ActPos ;
+	rSetPosLimBwd := axisGap.NcToPlc.SetPos;
+END_IF
+
+
+
+// Stuff for testing cage deflection 	
+
+ftLimFwd_AirPitch(CLK:= biLimFwd_AirPitch);
+ftLimBwd_AirPitch(CLK:= biLimBwd_AirPitch);
+
+IF (ftLimFwd_AirPitch.Q) THEN
+	rActPosLimFwd_AirPitch := axisGAP.NcToPlc.ActPos ;
+	rSetPosLimFwd_AirPitch := axisGap.NcToPlc.SetPos;
+END_IF
+
+IF (ftLimBwd_AirPitch.Q) THEN
+	rActPosLimBwd_AirPitch := axisGAP.NcToPlc.ActPos ;
+	rSetPosLimBwd_AirPitch := axisGap.NcToPlc.SetPos;
+END_IF
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="CrystalGap_Limit_Switches">
+      <LineId Id="36" Count="1" />
+      <LineId Id="24" Count="11" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="40" Count="2" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="52" Count="1" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="61" Count="2" />
+      <LineId Id="69" Count="0" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="107" Count="0" />
+      <LineId Id="126" Count="1" />
+      <LineId Id="108" Count="1" />
+      <LineId Id="114" Count="0" />
+      <LineId Id="110" Count="1" />
+      <LineId Id="118" Count="7" />
+      <LineId Id="112" Count="1" />
+      <LineId Id="106" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

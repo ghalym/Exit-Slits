@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="FB_Test" Id="{2de176e6-6bae-44e9-9f5f-0ebe69940477}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Test
+
+VAR_IN_OUT
+	axis: AXIS_REF;
+END_VAR
+
+VAR
+	fbAxisMoveAbsolute: MC_MoveAbsolute;
+	
+	
+	bMove: BOOL := FALSE;
+	fTargetPosition: LREAL := 50;
+END_VAR
+VAR_INPUT
+	fTargetVelocity: LREAL := 1;
+END_VAR
+
+VAR
+	fOverride: LREAL := 100;
+	bEnable: BOOL := FALSE;
+	nStep: int := 0;
+	nCount: int := 0;
+END_VAR
+
+VAR_INPUT
+	fStartPosition: LREAL := 20;
+	fEndPosition: LREAL := 25;
+	nDivisions: int := 6;
+END_VAR
+
+VAR
+	fPositionInc: LREAL;
+END_VAR
+
+VAR_IN_OUT
+	fbAxisPower: MC_Power;
+END_VAR
+
+VAR
+	tWait: TON;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[axis.ReadStatus();
+
+
+
+
+fbAxisMoveAbsolute(
+	Axis:= axis,
+	Execute:= bMove,
+	Position:= fTargetPosition,
+	Velocity:= fTargetVelocity,
+	Acceleration:= ,
+	Deceleration:= ,
+	Jerk:= ,
+	BufferMode:= ,
+	Options:= ,
+	Done=> ,
+	Busy=> ,
+	Active=> ,
+	CommandAborted=> ,
+	Error=> ,
+	ErrorID=> );
+	
+	
+	CASE nStep OF
+		
+		0: 
+			bEnable:=FALSE;
+			bMove:=FALSE;
+			nCount:=0;
+			IF (nDivisions <> 0) THEN
+				fPositionInc := (fEndPosition -fStartPosition) /nDivisions;
+			END_IF
+			 
+
+		1:
+			bEnable:= TRUE;
+			IF (fbAxisPower.Status) THEN
+				nStep:=nStep+1;
+			END_IF;
+			
+			
+		2:
+			fTargetPosition := fStartPosition;
+			bMove:= TRUE;
+			nStep:=nStep+1;
+			IF fbAxisMoveAbsolute.Active THEN
+				bMove:=FALSE;
+				nStep:=nStep+1;
+			END_IF
+			
+		3:
+			IF (*fbAxisMoveAbsolute.Done AND*) tWait.Q (*(axis.Status.InTargetPosition)*) THEN
+				fTargetPosition := fbAxisMoveAbsolute.Position + fPositionInc;
+				nStep:=nStep+1;
+				bMove:=FALSE;
+				IF ( fTargetPosition > fEndPosition )  THEN 
+				fTargetPosition:= fEndPosition;
+				END_IF
+			END_IF
+			IF (axis.NcToPlc.ActPos >= fEndPosition-0.0002) THEN
+					nStep:=5;
+			END_IF
+			//IF (fbAxisMoveAbsolute.Error) THEN
+			//	nStep:=999;
+			//END_IF
+		
+		4:
+			bMove:= TRUE;
+			IF fbAxisMoveAbsolute.Active THEN
+				bMove:=FALSE;
+				nStep:=3;	
+			
+			END_IF
+		
+			
+		5:
+			IF (*fbAxisMoveAbsolute.Done AND*) tWait.Q (* (axis.Status.InTargetPosition)*) THEN
+				fTargetPosition := fbAxisMoveAbsolute.Position - fPositionInc;
+				nStep:=nStep+1;
+				bMove:=FALSE;
+				IF ( fTargetPosition < fStartPosition )  THEN 
+				fTargetPosition:= fStartPosition;
+				END_IF
+			END_IF
+			IF (axis.NcToPlc.ActPos <= fStartPosition+0.0002) THEN
+				nStep:=0;
+			END_IF
+		
+		6:
+			bMove:= TRUE;
+			IF fbAxisMoveAbsolute.Active THEN
+				bMove:=FALSE;
+				nStep:=5;	
+			END_IF
+		
+	
+	
+	END_CASE
+	
+tWait(In:= axis.Status.InTargetPosition, PT:=T#2S);
+	
+axis.ReadStatus();
+//fbAxisPower(Enable := bEnable);]]></ST>
+    </Implementation>
+    <LineIds Name="FB_Test">
+      <LineId Id="10" Count="2" />
+      <LineId Id="27" Count="93" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="553" Count="0" />
+      <LineId Id="694" Count="0" />
+      <LineId Id="554" Count="0" />
+      <LineId Id="556" Count="0" />
+      <LineId Id="555" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

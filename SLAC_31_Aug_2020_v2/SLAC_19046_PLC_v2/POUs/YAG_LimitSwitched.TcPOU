@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="YAG_LimitSwitched" Id="{926e5d18-980c-4bc0-baa3-64e27920106e}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM YAG_LimitSwitched
+
+VAR
+	
+    axisYAG: AXIS_REF;
+    fbAxisPowerYAG: MC_Power;
+       
+	bEnable: BOOL := TRUE;
+    fOverride: LREAL := 100;
+    		
+	biLimFwd_YAG AT %I*: BOOL;
+	biLimBwd_YAG AT %I*: BOOL;
+
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbAxisPowerYAG(
+    Axis:= axisYAG,
+    Enable:= bEnable,
+    Enable_Positive:= biLimFwd_YAG, // TRUE, //
+    Enable_Negative:= biLimBwd_YAG, // TRUE, //
+    Override:= fOverride,
+    BufferMode:= ,
+    Options:= ,
+    Status=> ,
+    Busy=> ,
+    Active=> ,
+    Error=> ,
+    ErrorID=> );]]></ST>
+    </Implementation>
+    <LineIds Name="YAG_LimitSwitched">
+      <LineId Id="23" Count="11" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

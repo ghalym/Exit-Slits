@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="MAIN" Id="{3931aef3-4867-4d88-b736-03fecad4f8a1}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+    axis: AXIS_REF;
+    fbAxisPower: MC_Power;
+    //fbAxisMoveAbsolute: MC_MoveAbsolute;
+    
+	bEnable: BOOL := TRUE;
+    fOverride: LREAL := 100;
+    	
+	biLimFwd_AirRoll AT %I*: BOOL;
+	biLimBwd_AirRoll AT %I*: BOOL;
+	
+	biLimFwd_CrysGap AT %I*: BOOL;
+	biLimBwd_CrysGap AT %I*: BOOL;
+	
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[axis.ReadStatus();
+
+
+fbAxisPower(
+    Axis:= axis,
+    Enable:= bEnable,
+    Enable_Positive:= biLimFwd_AirRoll,
+    Enable_Negative:= biLimBwd_AirRoll,
+    Override:= fOverride,
+    BufferMode:= ,
+    Options:= ,
+    Status=> ,
+    Busy=> ,
+    Active=> ,
+    Error=> ,
+    ErrorID=> );]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="101" Count="0" />
+      <LineId Id="115" Count="0" />
+      <LineId Id="114" Count="0" />
+      <LineId Id="102" Count="11" />
+      <LineId Id="41" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
