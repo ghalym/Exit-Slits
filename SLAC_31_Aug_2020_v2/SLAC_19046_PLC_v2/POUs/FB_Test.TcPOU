@@ -12,7 +12,7 @@ VAR
 	
 	
 	bMove: BOOL := FALSE;
-	fTargetPosition: LREAL := 50;
+	fTargetPosition: LREAL := 0;
 END_VAR
 VAR_INPUT
 	fTargetVelocity: LREAL := 1;
@@ -103,7 +103,7 @@ fbAxisMoveAbsolute(
 				fTargetPosition:= fEndPosition;
 				END_IF
 			END_IF
-			IF (axis.NcToPlc.ActPos >= fEndPosition-0.0002) THEN
+			IF (axis.NcToPlc.ActPos >= fEndPosition-0.009) THEN //accuracy to inpout
 					nStep:=5;
 			END_IF
 			//IF (fbAxisMoveAbsolute.Error) THEN

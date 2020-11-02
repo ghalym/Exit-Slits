@@ -1914,12 +1914,12 @@ External Setpoint Generation:
 						<Dynamic Acceleration="1.59597" Deceleration="1.59597" Jerk="4.61435"/>
 						<Velo SlowManual="0.075" FastManual="0.2" Maximum="0.6"/>
 						<PositionAreaControl Range="0.01"/>
-						<TargetPosControl Range="1e-05"/>
+						<TargetPosControl Range="0.0001"/>
 						<OtherSettings AllowMotionCmdToSlave="true" PulseDistancePos="0.05" PulseDistanceNeg="0.05"/>
 					</AxisPara>
 					<Encoder Name="Enc" EncType="29">
 						<EncPara ScaleFactorNumerator="1e-06" Offset="-19.0877" MaxCount="#xffffffff">
-							<SoftEndMinControl Enable="true" Range="0.02"/>
+							<SoftEndMinControl Enable="true" Range="0.05"/>
 							<SoftEndMaxControl Enable="true" Range="9.1"/>
 							<Inc RefSoftSyncMask="#x0000ffff"/>
 						</EncPara>
@@ -2035,7 +2035,7 @@ External Setpoint Generation:
 					<Controller Name="Ctrl" CtrType="3">
 						<CtrPara PriorControlFactor="1">
 							<PosDiffControl Range="0.15"/>
-							<PID PosKp="10" PosTv="0.2" DeadBandPosition="0.0001"/>
+							<PID PosKp="4" PosTv="0.2" PosTd="1" DeadBandPosition="0.0001"/>
 							<Observer BandWidth="20"/>
 							<ParameterChanged>514</ParameterChanged>
 						</CtrPara>
@@ -2063,7 +2063,7 @@ External Setpoint Generation:
 						<Dynamic Acceleration="4.26689" Deceleration="4.26689" Jerk="19.1646"/>
 						<Velo SlowManual="0.5" FastManual="1" Maximum="2"/>
 						<PositionAreaControl Range="0.05"/>
-						<TargetPosControl Range="0.001"/>
+						<TargetPosControl Range="0.05"/>
 						<OtherSettings AllowMotionCmdToSlave="true"/>
 					</AxisPara>
 					<Encoder Name="Enc" EncType="29">
@@ -2303,6 +2303,18 @@ External Setpoint Generation:
 							<Name>AirRoll_Limit_Switches.axisAirRoll.NcToPlc</Name>
 							<Type GUID="{72F5AAAA-16DF-4ED3-8367-F6C8C3ADAE99}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 						</Var>
+						<Var>
+							<Name>YAG_LimitSwitched.I_moter_Yag</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>CrystalGap_Limit_Switches.I_moter_Gap</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>AirPitch_Limit_Switches.I_moter_AirPich</Name>
+							<Type>UINT</Type>
+						</Var>
 					</Vars>
 					<Vars VarGrpType="2">
 						<Name>PlcTask Outputs</Name>
@@ -2420,7 +2432,7 @@ External Setpoint Generation:
 							<SyncMan>001080002600010001000000400080008000001026010000</SyncMan>
 							<SyncMan>801080002200010002000000400080008000801022010000</SyncMan>
 							<SyncMan>001108002400010003000000000000000800001124010000</SyncMan>
-							<SyncMan>801108002000010004000000000000000800801120010000</SyncMan>
+							<SyncMan>80110c002000010004000000000000000800801120010000</SyncMan>
 							<Fmmu>0000000000000000001100020100000001000000000000000000000000000000</Fmmu>
 							<Fmmu>0000000000000000801100010100000002000000000000000000000000000000</Fmmu>
 							<Fmmu>00000000000000000d0800010100000003000000000000000000000000000000</Fmmu>
@@ -2586,7 +2598,7 @@ External Setpoint Generation:
 									<Type>BIT</Type>
 								</Entry>
 							</Pdo>
-							<Pdo Name="STM Synchron info data" Index="#x1a04" Flags="#x0010">
+							<Pdo Name="STM Synchron info data" Index="#x1a04" Flags="#x0010" SyncMan="3">
 								<Entry Name="Info data 1" Index="#x6010" Sub="#x11">
 									<Type>UINT</Type>
 								</Entry>
@@ -3704,7 +3716,7 @@ External Setpoint Generation:
 							<SyncMan>001080002600010001000000400080008000001026010000</SyncMan>
 							<SyncMan>801080002200010002000000400080008000801022010000</SyncMan>
 							<SyncMan>001108002400010003000000000000000800001124010000</SyncMan>
-							<SyncMan>801108002000010004000000000000000800801120010000</SyncMan>
+							<SyncMan>80110c002000010004000000000000000800801120010000</SyncMan>
 							<Fmmu>0000000000000000001100020100000001000000000000000000000000000000</Fmmu>
 							<Fmmu>0000000000000000801100010100000002000000000000000000000000000000</Fmmu>
 							<Fmmu>00000000000000000d0800010100000003000000000000000000000000000000</Fmmu>
@@ -3870,7 +3882,7 @@ External Setpoint Generation:
 									<Type>BIT</Type>
 								</Entry>
 							</Pdo>
-							<Pdo Name="STM Synchron info data" Index="#x1a04" Flags="#x0010">
+							<Pdo Name="STM Synchron info data" Index="#x1a04" Flags="#x0010" SyncMan="3">
 								<Entry Name="Info data 1" Index="#x6010" Sub="#x11">
 									<Type>UINT</Type>
 								</Entry>
@@ -4132,7 +4144,7 @@ External Setpoint Generation:
 							<SyncMan>001080002600010001000000400080008000001026010000</SyncMan>
 							<SyncMan>801080002200010002000000400080008000801022010000</SyncMan>
 							<SyncMan>001108002400010003000000000000000800001124010000</SyncMan>
-							<SyncMan>801108002000010004000000000000000800801120010000</SyncMan>
+							<SyncMan>80110c002000010004000000000000000800801120010000</SyncMan>
 							<Fmmu>0000000000000000001100020100000001000000000000000000000000000000</Fmmu>
 							<Fmmu>0000000000000000801100010100000002000000000000000000000000000000</Fmmu>
 							<Fmmu>00000000000000000d0800010100000003000000000000000000000000000000</Fmmu>
@@ -4298,7 +4310,7 @@ External Setpoint Generation:
 									<Type>BIT</Type>
 								</Entry>
 							</Pdo>
-							<Pdo Name="STM Synchron info data" Index="#x1a04" Flags="#x0010">
+							<Pdo Name="STM Synchron info data" Index="#x1a04" Flags="#x0010" SyncMan="3">
 								<Entry Name="Info data 1" Index="#x6010" Sub="#x11">
 									<Type>UINT</Type>
 								</Entry>
@@ -5369,6 +5381,7 @@ External Setpoint Generation:
 		</OwnerA>
 		<OwnerA Name="TIPC^SLAC_19046_PLC_v2^SLAC_19046_PLC_v2 Instance">
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 3 (EK1100)^Term 4 (EL7047) Air Pitch">
+				<Link VarA="PlcTask Inputs^AirPitch_Limit_Switches.I_moter_AirPich" VarB="STM Synchron info data^Info data 2"/>
 				<Link VarA="PlcTask Inputs^AirPitch_Limit_Switches.biLimBwd_AirPitch" VarB="STM Status^Status^Digital input 1"/>
 				<Link VarA="PlcTask Inputs^AirPitch_Limit_Switches.biLimFwd_AirPitch" VarB="STM Status^Status^Digital input 2"/>
 				<Link VarA="PlcTask Inputs^CrystalGap_Limit_Switches.biLimBwd_AirPitch" VarB="STM Status^Status^Digital input 1"/>
@@ -5384,12 +5397,14 @@ External Setpoint Generation:
 				<Link VarA="PlcTask Inputs^MAIN.biLimFwd_AirRoll" VarB="STM Status^Status^Digital input 1"/>
 			</OwnerB>
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 3 (EK1100)^Term 7 (EL7047) Crystal Gap">
+				<Link VarA="PlcTask Inputs^CrystalGap_Limit_Switches.I_moter_Gap" VarB="STM Synchron info data^Info data 2"/>
 				<Link VarA="PlcTask Inputs^CrystalGap_Limit_Switches.biLimBwd_CrysGap" VarB="STM Status^Status^Digital input 1"/>
 				<Link VarA="PlcTask Inputs^CrystalGap_Limit_Switches.biLimFwd_CrysGap" VarB="STM Status^Status^Digital input 2"/>
 				<Link VarA="PlcTask Inputs^MAIN.biLimBwd_CrysGap" VarB="STM Status^Status^Digital input 2"/>
 				<Link VarA="PlcTask Inputs^MAIN.biLimFwd_CrysGap" VarB="STM Status^Status^Digital input 1"/>
 			</OwnerB>
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 3 (EK1100)^Term 8 (EL7047) YAG">
+				<Link VarA="PlcTask Inputs^YAG_LimitSwitched.I_moter_Yag" VarB="STM Synchron info data^Info data 2"/>
 				<Link VarA="PlcTask Inputs^YAG_LimitSwitched.biLimBwd_YAG" VarB="STM Status^Status^Digital input 2"/>
 				<Link VarA="PlcTask Inputs^YAG_LimitSwitched.biLimFwd_YAG" VarB="STM Status^Status^Digital input 1"/>
 			</OwnerB>

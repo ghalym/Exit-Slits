@@ -14,12 +14,21 @@ VAR
 	biLimFwd_AirPitch AT %I*: BOOL;
 	biLimBwd_AirPitch AT %I*: BOOL;
 
-
+	fbtest:FB_Test;
+	I_moter_AirPich AT %I*: UINT;
 
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[
+
+fbtest(
+	axis:=axisAirPitch , 
+	fTargetVelocity:=0.12 , 
+	fStartPosition:= -3.5 , 
+	fEndPosition:= 2.8 , 
+	nDivisions:= 20 , 
+	fbAxisPower:= fbAxisPowerAirPitch );
 
 fbAxisPowerAirPitch(
     Axis:= axisAirPitch,
@@ -36,7 +45,11 @@ fbAxisPowerAirPitch(
     ErrorID=> );]]></ST>
     </Implementation>
     <LineIds Name="AirPitch_Limit_Switches">
-      <LineId Id="31" Count="1" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="56" Count="5" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="32" Count="0" />
       <LineId Id="19" Count="11" />
       <LineId Id="5" Count="0" />
     </LineIds>

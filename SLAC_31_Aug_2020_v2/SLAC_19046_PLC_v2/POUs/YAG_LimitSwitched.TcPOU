@@ -14,10 +14,20 @@ VAR
 	biLimFwd_YAG AT %I*: BOOL;
 	biLimBwd_YAG AT %I*: BOOL;
 
+	fbtest: FB_TEST;
+	I_moter_Yag AT %I*: UINT;
+	
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[fbAxisPowerYAG(
+      <ST><![CDATA[fbtest(
+	axis:=axisYAG , 
+	fTargetVelocity:=0.5 , 
+	fStartPosition:= 0, 
+	fEndPosition:= 41, 
+	nDivisions:= 20 , 
+	fbAxisPower:= fbAxisPowerYAG );
+fbAxisPowerYAG(
     Axis:= axisYAG,
     Enable:= bEnable,
     Enable_Positive:= biLimFwd_YAG, // TRUE, //
@@ -32,7 +42,10 @@ END_VAR
     ErrorID=> );]]></ST>
     </Implementation>
     <LineIds Name="YAG_LimitSwitched">
-      <LineId Id="23" Count="11" />
+      <LineId Id="49" Count="5" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="24" Count="10" />
       <LineId Id="5" Count="0" />
     </LineIds>
   </POU>

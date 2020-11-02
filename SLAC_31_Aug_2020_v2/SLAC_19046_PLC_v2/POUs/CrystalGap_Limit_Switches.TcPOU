@@ -40,10 +40,22 @@ VAR
 	rSetPosLimFwd_AirPitch:REAL; //save the set motor position
 	rSetPosLimBwd_AirPitch:REAL;
 		
+	fbtest: FB_TEST;
+	
+	I_moter_Gap AT %I*: UINT;
+	
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[
+fbtest(
+	axis:=axisGAP , 
+	fTargetVelocity:=0.1 , 
+	fStartPosition:= 0.05, 
+	fEndPosition:= 4, 
+	nDivisions:= 20 , 
+	fbAxisPower:= fbAxisPowerGAP );
+
 
 fbAxisPowerGAP(
     Axis:= axisGAP,
@@ -96,7 +108,10 @@ END_IF
 ]]></ST>
     </Implementation>
     <LineIds Name="CrystalGap_Limit_Switches">
-      <LineId Id="36" Count="1" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="170" Count="5" />
+      <LineId Id="168" Count="1" />
+      <LineId Id="37" Count="0" />
       <LineId Id="24" Count="11" />
       <LineId Id="5" Count="0" />
       <LineId Id="40" Count="2" />

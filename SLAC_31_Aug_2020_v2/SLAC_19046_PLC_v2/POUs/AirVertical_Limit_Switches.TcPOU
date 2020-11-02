@@ -14,12 +14,18 @@ VAR
 	biLimFwd_AirVertical AT %I*: BOOL;
 	biLimBwd_AirVertical AT %I*: BOOL;
 
-
+	fbtest:FB_Test;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[
-
+fbtest(
+	axis:=axisAirVertical , 
+	fTargetVelocity:=0.3 , 
+	fStartPosition:= -4.1, 
+	fEndPosition:= 3, 
+	nDivisions:= 20 , 
+	fbAxisPower:= fbAxisPowerAirVertical );
 fbAxisPowerAirVertical(
     Axis:= axisAirVertical,
     Enable:= bEnable,
@@ -35,7 +41,9 @@ fbAxisPowerAirVertical(
     ErrorID=> );]]></ST>
     </Implementation>
     <LineIds Name="AirVertical_Limit_Switches">
-      <LineId Id="18" Count="13" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="47" Count="5" />
+      <LineId Id="19" Count="12" />
       <LineId Id="5" Count="0" />
     </LineIds>
   </POU>

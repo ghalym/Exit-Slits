@@ -12,11 +12,22 @@ VAR
     		
 	biLimFwd_AirRoll AT %I*: BOOL;
 	biLimBwd_AirRoll AT %I*: BOOL;
+	
+	fbtest:FB_Test;
 
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[fbAxisPowerAirRoll(
+      <ST><![CDATA[
+fbtest(
+	axis:=axisAirRoll , 
+	fTargetVelocity:=0.24 , 
+	fStartPosition:= -4.8, 
+	fEndPosition:= 6.1 , 
+	nDivisions:= 20 , 
+	fbAxisPower:= fbAxisPowerAirRoll );
+
+fbAxisPowerAirRoll(
     Axis:= axisAirRoll,
     Enable:= bEnable,
     Enable_Positive:= biLimFwd_AirRoll, // TRUE, //
@@ -31,6 +42,9 @@ END_VAR
     ErrorID=> );]]></ST>
     </Implementation>
     <LineIds Name="AirRoll_Limit_Switches">
+      <LineId Id="44" Count="0" />
+      <LineId Id="47" Count="5" />
+      <LineId Id="45" Count="1" />
       <LineId Id="19" Count="11" />
       <LineId Id="5" Count="0" />
     </LineIds>

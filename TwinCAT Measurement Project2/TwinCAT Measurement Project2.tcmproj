@@ -9,7 +9,43 @@
     <Name>TwinCAT Measurement Project2</Name>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="AirPitch_with_Vacuum.svdx">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="AirRollTest.svdx">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="AirVertical.svdx">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="AitPitchTest.svdx">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="GapTest small range.svdx">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="GapTestA.svdx">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="GAP_Vacuum_no_schroolPump.svdx">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Gap_Vacuum_schrollPumo_Running.svdx">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Scope Project2.svdx">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Scope Project2.tcscopex">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="ScopeWizard.tcscopex">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Yag Test.svdx">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="YAG under vacuum with current.svdx">
       <SubType>Content</SubType>
     </Content>
   </ItemGroup>
