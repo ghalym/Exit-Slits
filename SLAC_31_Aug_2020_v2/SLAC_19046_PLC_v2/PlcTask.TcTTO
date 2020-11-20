@@ -1,26 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
   <Task Name="PlcTask" Id="{5d8e8cf2-b446-4055-a72c-eab9bd4644f8}">
     <!--CycleTime in micro seconds.-->
     <CycleTime>10000</CycleTime>
     <Priority>20</Priority>
     <PouCall>
-      <Name>AirPitch_Limit_Switches</Name>
-    </PouCall>
-    <PouCall>
       <Name>MAIN</Name>
-    </PouCall>
-    <PouCall>
-      <Name>YAG_LimitSwitched</Name>
-    </PouCall>
-    <PouCall>
-      <Name>CrystalGap_Limit_Switches</Name>
-    </PouCall>
-    <PouCall>
-      <Name>AirVertical_Limit_Switches</Name>
-    </PouCall>
-    <PouCall>
-      <Name>AirRoll_Limit_Switches</Name>
     </PouCall>
     <TaskFBGuid>{443cb3d0-c07a-4bd8-8d21-ed65ce0b89d9}</TaskFBGuid>
     <Fb_init>{2150f50b-f932-419d-a118-2afd12f2e8f9}</Fb_init>

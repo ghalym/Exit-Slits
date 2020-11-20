@@ -3,11 +3,26 @@
   <POU Name="FB_Test" Id="{2de176e6-6bae-44e9-9f5f-0ebe69940477}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Test
 
+
+VAR_INPUT
+	fTargetVelocity: LREAL := 0.1;
+	fPositionDelta:LREAL := 0.009;
+	fStartPosition: LREAL := 0; //Negative
+	fEndPosition: LREAL := 0; //Positive
+	nDivisions: int := 1;
+	bRunAll:BOOL:=FALSE;
+END_VAR
+
+
+
 VAR_IN_OUT
 	axis: AXIS_REF;
+	fbAxisPower: MC_Power;
+	
 END_VAR
 
 VAR
+	
 	fbAxisMoveAbsolute: MC_MoveAbsolute;
 	
 	
@@ -16,34 +31,14 @@ VAR
 	rActPosLimBwd_AirPitch: LREAL;
 	rSetPosLimBwd_AirPitch: LREAL;
 	step: INT;
-END_VAR
-VAR_INPUT
-	fTargetVelocity: LREAL := 0.1;
-	fPositionDelta:LREAL := 0.009;
-END_VAR
 
-VAR
+
 	fOverride: LREAL := 100;
 	bEnable: BOOL := FALSE;
-	nStep: int := 0;
+	nStep: int := 0; // set to 1 to start the step test, 7 full stroke, 20 HL rep test, 30 LL rep test
 	nCount: int := 0;
-END_VAR
-
-VAR_INPUT
-	fStartPosition: LREAL := 20;
-	fEndPosition: LREAL := 25;
-	nDivisions: int := 6;
-END_VAR
-
-VAR
 	fPositionInc: LREAL;
-END_VAR
-
-VAR_IN_OUT
-	fbAxisPower: MC_Power;
-END_VAR
-
-VAR
+	
 	tWait: TON;
 	tTimeout: TON; //timeout
 	bError:BOOL :=FALSE;
@@ -54,14 +49,27 @@ VAR
 	rActPosLimFwd:LREAL; //save the actual motor position
 	rActPosLimBwd:LREAL;
 	
+	rEncPosLimFwd:LREAL; //save the actual motor position
+	rEncPosLimBwd:LREAL;
+	
 	rSetPosLimFwd:LREAL; //save the set motor position
 	rSetPosLimBwd:LREAL;
+	
+	aPosLimFwd: ARRAY[1..5] OF LREAL;
+	aPosLimBwd: ARRAY[1..5] OF LREAL;
+	aEncLimFwd: ARRAY[1..5] OF LREAL;
+	aEncLimBwd: ARRAY[1..5] OF LREAL;
+	index:int:=0;
 	
 	ftLimFwd :F_TRIG; //detect falling edge on the limit switch
 	ftLimBwd :F_TRIG;
 	
 	nMotorLoad AT %I*: UINT; //default Info data 1
 	nMotorCurrent AT %I*: UINT;//default info data 2
+	nEncoderCount AT %I*: ULINT;
+	
+	fbScopeServerControl: FB_ScopeServerControl;
+   eReqState: E_ScopeServerState := SCOPE_SERVER_IDLE;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -97,9 +105,12 @@ fbAxisMoveAbsolute(
 			IF (nDivisions <> 0) THEN
 				fPositionInc := (fEndPosition -fStartPosition) /nDivisions;
 			END_IF
+			//eReqState:= E_ScopeServerState.SCOPE_SERVER_STOP;
 			 
 
 		1:
+			eReqState:= E_ScopeServerState.SCOPE_SERVER_CONNECT;
+			eReqState:= E_ScopeServerState.SCOPE_SERVER_START;
 			bTestComplete := FALSE;
 			bError:=FALSE;
 			bEnable:= TRUE;
@@ -152,7 +163,7 @@ fbAxisMoveAbsolute(
 				END_IF
 			END_IF
 			IF (axis.NcToPlc.ActPos <= fStartPosition+fPositionDelta) THEN
-				nStep:=0;
+				IF NOT(bRunAll) THEN nStep:=0; ELSE nStep:=7; END_IF
 				bTestComplete := TRUE;
 			END_IF
 		
@@ -162,8 +173,109 @@ fbAxisMoveAbsolute(
 				bMove:=FALSE;
 				nStep:=5;	
 			END_IF
+			
+		7: // Full stroke, the stage is back to the start position, move to the end position
+			bTestComplete := FALSE;
+			bError:=FALSE;
+			fTargetPosition := fEndPosition;
+			bMove:= TRUE;
+			IF fbAxisMoveAbsolute.Active OR (axis.NcToPlc.ActPos >= fEndPosition-fPositionDelta)THEN
+				bMove:=FALSE;
+				nStep:=nStep+1;
+			END_IF
+		8: // wait until the stage is at the end position then set position to start position
+		  IF (*fbAxisMoveAbsolute.Done AND*) tWait.Q (*(axis.Status.InTargetPosition)*) OR (axis.NcToPlc.ActPos >= fEndPosition-fPositionDelta) THEN
+				fTargetPosition := fStartPosition;
+				nStep:=nStep+1;
+				bMove:=FALSE;
+			END_IF
+		9: //Activate move
+			bMove:= TRUE;
+			IF fbAxisMoveAbsolute.Active THEN
+				bMove:=FALSE;
+				nStep:=nStep+1;	
+			END_IF
+		 10:// wait until the stage reaches the start position
+		   IF (*fbAxisMoveAbsolute.Done AND*) tWait.Q (*(axis.Status.InTargetPosition)*) THEN
+				fTargetPosition := fStartPosition;
+				IF NOT(bRunAll) THEN nStep:=0; ELSE nStep:=20; END_IF
+				bTestComplete := TRUE;
+				bMove:=FALSE;
+			END_IF
+
+		20:  //High Limit switch repitition test
+			index:=1;
+			nStep:=nStep+1;
+			
+		21: //High Limit switch repitition test
+			bTestComplete := FALSE;
+			bError:=FALSE;
+			fTargetPosition := fEndPosition;
+			bMove:= TRUE;
+			IF fbAxisMoveAbsolute.Active OR (axis.NcToPlc.ActPos >= fEndPosition-fPositionDelta)THEN
+				bMove:=FALSE;
+				nStep:=nStep+1;
+			END_IF
+		22: // wait until the stage is at the end position
+		  IF (*fbAxisMoveAbsolute.Done AND*) tWait.Q (*(axis.Status.InTargetPosition)*) OR fbAxisPower.Enable_Positive  THEN
+				fTargetPosition := fEndPosition - fPositionInc;
+				aPosLimFwd[index]:= rActPosLimFwd;
+				aEncLimFwd[index]:= rEncPosLimFwd;
+				index:=index+1;
+				nStep:=nStep+1;
+				bMove:=FALSE;
+			END_IF
+		23: //Activate move
+			bMove:= TRUE;
+			IF fbAxisMoveAbsolute.Active THEN
+				bMove:=FALSE;
+				nStep:=nStep+1;	
+			END_IF
+		24: // wait until the stage is at the end position
+		  IF (*fbAxisMoveAbsolute.Done AND*) tWait.Q (*(axis.Status.InTargetPosition)*) THEN
+				fTargetPosition := fEndPosition;
+				if (index<=5) THEN nStep:=21; ELSE IF NOT(bRunAll) THEN nStep:=0; ELSE nStep:=30; END_IF END_IF
+				bMove:=FALSE;
+			END_IF
 		
-	
+			
+			
+		30: // Low Limit Switch rep
+			index:=1;
+			nStep:=nStep+1;
+			
+		31: //Low Limit switch repitition test
+			bTestComplete := FALSE;
+			bError:=FALSE;
+			fTargetPosition := fStartPosition;
+			bMove:= TRUE;
+			
+			IF fbAxisMoveAbsolute.Active OR (axis.NcToPlc.ActPos <= fStartPosition+fPositionDelta)THEN
+				bMove:=FALSE;
+				nStep:=nStep+1;
+			END_IF
+		32: // wait until the stage is at the end position
+		  IF (*fbAxisMoveAbsolute.Done AND*) tWait.Q (*(axis.Status.InTargetPosition)*) OR fbAxisPower.Enable_Negative  THEN
+				fTargetPosition := fStartPosition + fPositionInc;
+				aPosLimBwd[index]:= rActPosLimBwd;
+				aEncLimBwd[index]:= rEncPosLimBwd;
+				index:=index+1;
+				nStep:=nStep+1;
+				bMove:=FALSE;
+			END_IF
+		33: //Activate move
+			bMove:= TRUE;
+			IF fbAxisMoveAbsolute.Active THEN
+				bMove:=FALSE;
+				nStep:=nStep+1;	
+			END_IF
+		34: // wait until the stage is at the end position
+		  IF (*fbAxisMoveAbsolute.Done AND*) tWait.Q (*(axis.Status.InTargetPosition)*) THEN
+				fTargetPosition := fEndPosition;
+				if (index<=5) THEN nStep:=31; ELSE nStep:=0; END_IF
+				bMove:=FALSE;
+			END_IF
+		
 	
 	END_CASE
 	
@@ -184,17 +296,30 @@ ftLimBwd(CLK:= fbAxisPower.Enable_Negative);
 IF (ftLimFwd.Q) THEN
 	rActPosLimFwd := axis.NcToPlc.ActPos ;
 	rSetPosLimFwd := axis.NcToPlc.SetPos;
+	rEncPosLimFwd := axis.NcToPlc.ActPos ;
 END_IF
 
 IF (ftLimBwd.Q) THEN
-	rActPosLimBwd_AirPitch := axis.NcToPlc.ActPos ;
-	rSetPosLimBwd_AirPitch := axis.NcToPlc.SetPos;
+	rActPosLimBwd := axis.NcToPlc.ActPos ;
+	rSetPosLimBwd:= axis.NcToPlc.SetPos;
+	rEncPosLimBwd := axis.NcToPlc.ActPos ;
 END_IF
 
 
 // Saving Min and Max position diff
 IF (axis.NcToPlc.PosDiff < rMinPosDiff) THEN rMinPosDiff := axis.NcToPlc.PosDiff; END_IF
 IF (axis.NcToPlc.PosDiff > fMaxPosDiff) THEN fMaxPosDiff := axis.NcToPlc.PosDiff; END_IF
+(*
+fbScopeServerControl(
+   sNetId:= '127.0.0.1.1.1',
+   eReqState:= eReqState,
+   sConfigFile:= 'C:\GitHub\Exit-Slits\Measurement Project\Scope Project1.tcscopex',
+   sSaveFile:= 'C:\GitHub\Exit-Slits\FAT Scopes\test.svd',
+   tTimeout:= t#5s,
+   bBusy=>,
+   bDone=>,
+   bError=>,
+   nErrorId=>);*)
  ]]></ST>
     </Implementation>
   </POU>

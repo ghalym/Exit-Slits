@@ -51,7 +51,7 @@ END_VAR
 fbtest(
 	axis:=axisGAP , 
 	fTargetVelocity:=0.1 , 
-	fStartPosition:= 0.05, 
+	fStartPosition:= 1,//0.05, 
 	fEndPosition:= 4, 
 	nDivisions:= 20 , 
 	fbAxisPower:= fbAxisPowerGAP );

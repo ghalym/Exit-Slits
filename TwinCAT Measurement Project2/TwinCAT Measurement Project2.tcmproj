@@ -39,9 +39,6 @@
     <Content Include="Scope Project2.tcscopex">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="ScopeWizard.tcscopex">
-      <SubType>Content</SubType>
-    </Content>
     <Content Include="Yag Test.svdx">
       <SubType>Content</SubType>
     </Content>

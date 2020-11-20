@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
   <POU Name="YAG_LimitSwitched" Id="{926e5d18-980c-4bc0-baa3-64e27920106e}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM YAG_LimitSwitched
 
@@ -22,10 +22,11 @@ END_VAR
     <Implementation>
       <ST><![CDATA[fbtest(
 	axis:=axisYAG , 
-	fTargetVelocity:=0.5 , 
-	fStartPosition:= 0, 
-	fEndPosition:= 41, 
+	fTargetVelocity:=0.2 , //0.5
+	fStartPosition:= -0.53,//0, 
+	fEndPosition:= 41.4,//41, 
 	nDivisions:= 20 , 
+	fPositionDelta:= 0.0099,
 	fbAxisPower:= fbAxisPowerYAG );
 fbAxisPowerYAG(
     Axis:= axisYAG,
@@ -41,12 +42,5 @@ fbAxisPowerYAG(
     Error=> ,
     ErrorID=> );]]></ST>
     </Implementation>
-    <LineIds Name="YAG_LimitSwitched">
-      <LineId Id="49" Count="5" />
-      <LineId Id="23" Count="0" />
-      <LineId Id="56" Count="0" />
-      <LineId Id="24" Count="10" />
-      <LineId Id="5" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

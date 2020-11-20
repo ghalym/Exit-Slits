@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
   <POU Name="MAIN" Id="{3931aef3-4867-4d88-b736-03fecad4f8a1}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
@@ -8,6 +8,8 @@ VAR
     //fbAxisMoveAbsolute: MC_MoveAbsolute;
     
 	bEnable: BOOL := TRUE;
+	Enable_Positive: BOOL:= TRUE;
+	Enable_Negative: BOOL:= TRUE;
     fOverride: LREAL := 100;
     	
 	biLimFwd_AirRoll AT %I*: BOOL;
@@ -16,16 +18,58 @@ VAR
 	biLimFwd_CrysGap AT %I*: BOOL;
 	biLimBwd_CrysGap AT %I*: BOOL;
 	
+	fbtestMain:FB_TEST;
+	fbtestSelection:FB_TEST;
+	iTestStageID:int:=0;
+	
+	
+	fbScopeServerControl: FB_ScopeServerControl;
+   eReqState: E_ScopeServerState := SCOPE_SERVER_IDLE;
+	
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[axis.ReadStatus();
-(*
+      <ST><![CDATA[(*This is only used for the scope purposes, so we don't have to change the aquisition axis everytime 
+we switch test between access*)
+
+CASE iTestStageID OF
+	0: //test axis
+		fbtestSelection := fbtestMain;
+	1: //Air Pitch
+		fbtestSelection := AirPitch_Limit_Switches.fbtest;
+	2://Air Roll
+		fbtestSelection := AirRoll_Limit_Switches.fbtest;
+	3: //Air Vertical
+    	fbtestSelection := AirVertical_Limit_Switches.fbtest;
+	4: // In Vac YAG
+		fbtestSelection := YAG_LimitSwitched.fbtest;
+	5: // In Vac Gap
+		fbtestSelection := CrystalGap_Limit_Switches.fbtest;
+END_CASE
+
+AirPitch_Limit_Switches();
+AirRoll_Limit_Switches();
+AirVertical_Limit_Switches();
+YAG_LimitSwitched();
+CrystalGap_Limit_Switches();
+
+
+fbtestMain(
+	axis:=axis , 
+	fTargetVelocity:=1 , 
+	fStartPosition:= 0.5, 
+	fEndPosition:= 10, 
+	nDivisions:= 5 , 
+	bRunAll:=TRUE,
+	fbAxisPower:= fbAxisPower );
+
+Enable_Positive:= (axis.NcToPlc.ActPos <10);
+Enable_Negative := (axis.NcToPlc.ActPos >0.5);
 
 fbAxisPower(
     Axis:= axis,
     Enable:= bEnable,
-    Enable_Positive:= biLimFwd_AirRoll,
-    Enable_Negative:= biLimBwd_AirRoll,
+    Enable_Positive:= Enable_Positive,
+    Enable_Negative:= Enable_Negative,
     Override:= fOverride,
     BufferMode:= ,
     Options:= ,
@@ -34,15 +78,7 @@ fbAxisPower(
     Active=> ,
     Error=> ,
     ErrorID=> );
-	*)]]></ST>
+]]></ST>
     </Implementation>
-    <LineIds Name="MAIN">
-      <LineId Id="101" Count="0" />
-      <LineId Id="115" Count="0" />
-      <LineId Id="114" Count="0" />
-      <LineId Id="102" Count="11" />
-      <LineId Id="41" Count="0" />
-      <LineId Id="131" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>
