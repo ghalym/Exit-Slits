@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
   <POU Name="AirVertical_Limit_Switches" Id="{97114625-ac17-4a14-8767-b57581610e25}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM AirVertical_Limit_Switches
 
@@ -22,8 +22,8 @@ END_VAR
 fbtest(
 	axis:=axisAirVertical , 
 	fTargetVelocity:=0.3 , 
-	fStartPosition:= -4.1, 
-	fEndPosition:= 3, 
+	fStartPosition:= -4.13,//-4.1, 
+	fEndPosition:= 3,//3, 
 	nDivisions:= 20 , 
 	fbAxisPower:= fbAxisPowerAirVertical );
 fbAxisPowerAirVertical(
@@ -40,11 +40,5 @@ fbAxisPowerAirVertical(
     Error=> ,
     ErrorID=> );]]></ST>
     </Implementation>
-    <LineIds Name="AirVertical_Limit_Switches">
-      <LineId Id="18" Count="0" />
-      <LineId Id="47" Count="5" />
-      <LineId Id="19" Count="12" />
-      <LineId Id="5" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

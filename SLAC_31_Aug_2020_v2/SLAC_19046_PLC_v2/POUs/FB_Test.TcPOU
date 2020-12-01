@@ -49,16 +49,16 @@ VAR
 	rActPosLimFwd:LREAL; //save the actual motor position
 	rActPosLimBwd:LREAL;
 	
-	rEncPosLimFwd:LREAL; //save the actual motor position
-	rEncPosLimBwd:LREAL;
+	rEncPosLimFwd:ULINT; //save the actual motor position
+	rEncPosLimBwd:ULINT;
 	
 	rSetPosLimFwd:LREAL; //save the set motor position
 	rSetPosLimBwd:LREAL;
 	
 	aPosLimFwd: ARRAY[1..5] OF LREAL;
 	aPosLimBwd: ARRAY[1..5] OF LREAL;
-	aEncLimFwd: ARRAY[1..5] OF LREAL;
-	aEncLimBwd: ARRAY[1..5] OF LREAL;
+	aEncLimFwd: ARRAY[1..5] OF ULINT;
+	aEncLimBwd: ARRAY[1..5] OF ULINT;
 	index:int:=0;
 	
 	ftLimFwd :F_TRIG; //detect falling edge on the limit switch
@@ -129,7 +129,7 @@ fbAxisMoveAbsolute(
 			END_IF
 			
 		3:
-			IF (*fbAxisMoveAbsolute.Done AND*) tWait.Q (*(axis.Status.InTargetPosition)*) THEN
+			IF (*fbAxisMoveAbsolute.Done AND*) tWait.Q (*(axis.Status.InTargetPosition)*) OR NOT fbAxisPower.Enable_Positive  THEN
 				fTargetPosition := fbAxisMoveAbsolute.Position + fPositionInc;
 				nStep:=nStep+1;
 				bMove:=FALSE;
@@ -217,7 +217,7 @@ fbAxisMoveAbsolute(
 				nStep:=nStep+1;
 			END_IF
 		22: // wait until the stage is at the end position
-		  IF (*fbAxisMoveAbsolute.Done AND*) tWait.Q (*(axis.Status.InTargetPosition)*) OR fbAxisPower.Enable_Positive  THEN
+		  IF (*fbAxisMoveAbsolute.Done AND*) tWait.Q (*(axis.Status.InTargetPosition)*) OR NOT fbAxisPower.Enable_Positive  THEN
 				fTargetPosition := fEndPosition - fPositionInc;
 				aPosLimFwd[index]:= rActPosLimFwd;
 				aEncLimFwd[index]:= rEncPosLimFwd;
@@ -232,7 +232,7 @@ fbAxisMoveAbsolute(
 				nStep:=nStep+1;	
 			END_IF
 		24: // wait until the stage is at the end position
-		  IF (*fbAxisMoveAbsolute.Done AND*) tWait.Q (*(axis.Status.InTargetPosition)*) THEN
+		  IF (*fbAxisMoveAbsolute.Done AND*) tWait.Q (*(axis.Status.InTargetPosition)*) OR NOT fbAxisPower.Enable_Positive THEN
 				fTargetPosition := fEndPosition;
 				if (index<=5) THEN nStep:=21; ELSE IF NOT(bRunAll) THEN nStep:=0; ELSE nStep:=30; END_IF END_IF
 				bMove:=FALSE;
@@ -255,7 +255,7 @@ fbAxisMoveAbsolute(
 				nStep:=nStep+1;
 			END_IF
 		32: // wait until the stage is at the end position
-		  IF (*fbAxisMoveAbsolute.Done AND*) tWait.Q (*(axis.Status.InTargetPosition)*) OR fbAxisPower.Enable_Negative  THEN
+		  IF (*fbAxisMoveAbsolute.Done AND*) tWait.Q (*(axis.Status.InTargetPosition)*) OR NOT fbAxisPower.Enable_Negative  THEN
 				fTargetPosition := fStartPosition + fPositionInc;
 				aPosLimBwd[index]:= rActPosLimBwd;
 				aEncLimBwd[index]:= rEncPosLimBwd;
@@ -270,7 +270,7 @@ fbAxisMoveAbsolute(
 				nStep:=nStep+1;	
 			END_IF
 		34: // wait until the stage is at the end position
-		  IF (*fbAxisMoveAbsolute.Done AND*) tWait.Q (*(axis.Status.InTargetPosition)*) THEN
+		  IF (*fbAxisMoveAbsolute.Done AND*) tWait.Q (*(axis.Status.InTargetPosition)*) OR NOT (fbAxisPower.Enable_Negative) THEN
 				fTargetPosition := fEndPosition;
 				if (index<=5) THEN nStep:=31; ELSE nStep:=0; END_IF
 				bMove:=FALSE;
@@ -296,13 +296,13 @@ ftLimBwd(CLK:= fbAxisPower.Enable_Negative);
 IF (ftLimFwd.Q) THEN
 	rActPosLimFwd := axis.NcToPlc.ActPos ;
 	rSetPosLimFwd := axis.NcToPlc.SetPos;
-	rEncPosLimFwd := axis.NcToPlc.ActPos ;
+	rEncPosLimFwd := nEncoderCount;//axis.NcToPlc.ActPos ;
 END_IF
 
 IF (ftLimBwd.Q) THEN
 	rActPosLimBwd := axis.NcToPlc.ActPos ;
 	rSetPosLimBwd:= axis.NcToPlc.SetPos;
-	rEncPosLimBwd := axis.NcToPlc.ActPos ;
+	rEncPosLimBwd := nEncoderCount;//axis.NcToPlc.ActPos ;
 END_IF
 
 

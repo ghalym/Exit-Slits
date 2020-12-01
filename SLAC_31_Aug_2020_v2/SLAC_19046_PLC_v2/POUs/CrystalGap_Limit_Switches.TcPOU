@@ -50,9 +50,9 @@ END_VAR
       <ST><![CDATA[
 fbtest(
 	axis:=axisGAP , 
-	fTargetVelocity:=0.1 , 
+	fTargetVelocity:=0.02 , 
 	fStartPosition:= 1,//0.05, 
-	fEndPosition:= 4, 
+	fEndPosition:= 8.65, 
 	nDivisions:= 20 , 
 	fbAxisPower:= fbAxisPowerGAP );
 

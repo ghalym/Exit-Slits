@@ -1583,8 +1583,8 @@ External Setpoint Generation:
 					</AxisPara>
 					<Encoder Name="Enc" EncType="29">
 						<EncPara ScaleFactorNumerator="1.2657e-07" Offset="-4.6852" MaxCount="#xffffffff" ReferenceSystem="1">
-							<SoftEndMinControl Enable="true" Range="-3.5"/>
-							<SoftEndMaxControl Enable="true" Range="2.8"/>
+							<SoftEndMinControl Enable="true" Range="-3.7"/>
+							<SoftEndMaxControl Enable="true" Range="3"/>
 							<Inc RefSoftSyncMask="#x0000ffff"/>
 						</EncPara>
 						<Vars VarGrpType="1">
@@ -1698,7 +1698,7 @@ External Setpoint Generation:
 					</Drive>
 					<Controller Name="Ctrl" CtrType="3">
 						<CtrPara PriorControlFactor="1">
-							<PosDiffControl Range="0.5"/>
+							<PosDiffControl Range="0.2"/>
 							<PID PosKp="10" PosTv="0.2" DeadBandPosition="0.0001"/>
 							<Observer BandWidth="20"/>
 						</CtrPara>
@@ -1729,8 +1729,8 @@ External Setpoint Generation:
 					</AxisPara>
 					<Encoder Name="Enc" EncType="29">
 						<EncPara ScaleFactorNumerator="1e-06" Offset="-10.712" MaxCount="#xffffffff">
-							<SoftEndMinControl Enable="true" Range="-4.1"/>
-							<SoftEndMaxControl Enable="true" Range="3"/>
+							<SoftEndMinControl Enable="true" Range="-4.15"/>
+							<SoftEndMaxControl Enable="true" Range="3.15"/>
 							<Inc RefSoftSyncMask="#x0000ffff"/>
 						</EncPara>
 						<Vars VarGrpType="1">
@@ -1878,8 +1878,8 @@ External Setpoint Generation:
 					</AxisPara>
 					<Encoder Name="Enc" EncType="29">
 						<EncPara ScaleFactorNumerator="2.4267e-07" Offset="-1031.2195" MaxCount="#xffffffff">
-							<SoftEndMinControl Enable="true" Range="-4.8"/>
-							<SoftEndMaxControl Enable="true" Range="6.1"/>
+							<SoftEndMinControl Enable="true" Range="-4.82"/>
+							<SoftEndMaxControl Enable="true" Range="6.22"/>
 							<Inc RefSoftSyncMask="#x0000ffff"/>
 						</EncPara>
 						<Vars VarGrpType="1">
@@ -2026,8 +2026,8 @@ External Setpoint Generation:
 					</AxisPara>
 					<Encoder Name="Enc" EncType="29">
 						<EncPara ScaleFactorNumerator="1e-06" Offset="-19.5127" MaxCount="#xffffffff">
-							<SoftEndMinControl Enable="true" Range="0.05"/>
-							<SoftEndMaxControl Enable="true" Range="9.1"/>
+							<SoftEndMinControl Enable="true" Range="5"/>
+							<SoftEndMaxControl Enable="true" Range="8.65"/>
 							<Inc RefSoftSyncMask="#x0000ffff"/>
 						</EncPara>
 						<Vars VarGrpType="1">
@@ -2175,7 +2175,7 @@ External Setpoint Generation:
 					</AxisPara>
 					<Encoder Name="Enc" EncType="29">
 						<EncPara ScaleFactorNumerator="1e-06" Offset="-17" MaxCount="#xffffffff">
-							<SoftEndMinControl Enable="true" Range="-0.53"/>
+							<SoftEndMinControl Enable="true" Range="-0.59"/>
 							<SoftEndMaxControl Enable="true" Range="41.6"/>
 							<Inc RefSoftSyncMask="#x0000ffff"/>
 						</EncPara>
@@ -2505,6 +2505,83 @@ External Setpoint Generation:
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
+							<Name>AirPitch_Limit_Switches.axisAirPitch.NcToPlc</Name>
+							<Type GUID="{72F5AAAA-16DF-4ED3-8367-F6C8C3ADAE99}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>AirPitch_Limit_Switches.biLimBwd_AirPitch</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>AirPitch_Limit_Switches.I_moter_AirPich</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>AirRoll_Limit_Switches.biLimFwd_AirRoll</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>AirRoll_Limit_Switches.biLimBwd_AirRoll</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>AirVertical_Limit_Switches.biLimFwd_AirVertical</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>AirRoll_Limit_Switches.axisAirRoll.NcToPlc</Name>
+							<Type GUID="{72F5AAAA-16DF-4ED3-8367-F6C8C3ADAE99}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>AirVertical_Limit_Switches.axisAirVertical.NcToPlc</Name>
+							<Type GUID="{72F5AAAA-16DF-4ED3-8367-F6C8C3ADAE99}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>AirVertical_Limit_Switches.biLimBwd_AirVertical</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>YAG_LimitSwitched.biLimFwd_YAG</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>YAG_LimitSwitched.biLimBwd_YAG</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>YAG_LimitSwitched.I_moter_Yag</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>CrystalGap_Limit_Switches.biLimFwd_CrysGap</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>YAG_LimitSwitched.axisYAG.NcToPlc</Name>
+							<Type GUID="{72F5AAAA-16DF-4ED3-8367-F6C8C3ADAE99}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>CrystalGap_Limit_Switches.axisGAP.NcToPlc</Name>
+							<Type GUID="{72F5AAAA-16DF-4ED3-8367-F6C8C3ADAE99}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>CrystalGap_Limit_Switches.biLimBwd_CrysGap</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>CrystalGap_Limit_Switches.biLimFwd_AirPitch</Name>
+							<Comment><![CDATA[ Stuff for testing cage deflection 			]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>CrystalGap_Limit_Switches.biLimBwd_AirPitch</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>CrystalGap_Limit_Switches.I_moter_Gap</Name>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
 							<Name>MAIN.fbtestMain.nMotorLoad</Name>
 							<Comment><![CDATA[default Info data 1]]></Comment>
 							<Type>UINT</Type>
@@ -2533,30 +2610,6 @@ External Setpoint Generation:
 							<Type>ULINT</Type>
 						</Var>
 						<Var>
-							<Name>AirPitch_Limit_Switches.axisAirPitch.NcToPlc</Name>
-							<Type GUID="{72F5AAAA-16DF-4ED3-8367-F6C8C3ADAE99}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
-						</Var>
-						<Var>
-							<Name>AirPitch_Limit_Switches.biLimBwd_AirPitch</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>AirPitch_Limit_Switches.I_moter_AirPich</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>AirRoll_Limit_Switches.biLimFwd_AirRoll</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>AirRoll_Limit_Switches.biLimBwd_AirRoll</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>AirVertical_Limit_Switches.biLimFwd_AirVertical</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
 							<Name>AirPitch_Limit_Switches.fbtest.nMotorLoad</Name>
 							<Comment><![CDATA[default Info data 1]]></Comment>
 							<Type>UINT</Type>
@@ -2569,10 +2622,6 @@ External Setpoint Generation:
 						<Var>
 							<Name>AirPitch_Limit_Switches.fbtest.nEncoderCount</Name>
 							<Type>ULINT</Type>
-						</Var>
-						<Var>
-							<Name>AirRoll_Limit_Switches.axisAirRoll.NcToPlc</Name>
-							<Type GUID="{72F5AAAA-16DF-4ED3-8367-F6C8C3ADAE99}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 						</Var>
 						<Var>
 							<Name>AirRoll_Limit_Switches.fbtest.nMotorLoad</Name>
@@ -2589,30 +2638,6 @@ External Setpoint Generation:
 							<Type>ULINT</Type>
 						</Var>
 						<Var>
-							<Name>AirVertical_Limit_Switches.axisAirVertical.NcToPlc</Name>
-							<Type GUID="{72F5AAAA-16DF-4ED3-8367-F6C8C3ADAE99}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
-						</Var>
-						<Var>
-							<Name>AirVertical_Limit_Switches.biLimBwd_AirVertical</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>YAG_LimitSwitched.biLimFwd_YAG</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>YAG_LimitSwitched.biLimBwd_YAG</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>YAG_LimitSwitched.I_moter_Yag</Name>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>CrystalGap_Limit_Switches.biLimFwd_CrysGap</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
 							<Name>AirVertical_Limit_Switches.fbtest.nMotorLoad</Name>
 							<Comment><![CDATA[default Info data 1]]></Comment>
 							<Type>UINT</Type>
@@ -2625,10 +2650,6 @@ External Setpoint Generation:
 						<Var>
 							<Name>AirVertical_Limit_Switches.fbtest.nEncoderCount</Name>
 							<Type>ULINT</Type>
-						</Var>
-						<Var>
-							<Name>YAG_LimitSwitched.axisYAG.NcToPlc</Name>
-							<Type GUID="{72F5AAAA-16DF-4ED3-8367-F6C8C3ADAE99}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 						</Var>
 						<Var>
 							<Name>YAG_LimitSwitched.fbtest.nMotorLoad</Name>
@@ -2645,24 +2666,8 @@ External Setpoint Generation:
 							<Type>ULINT</Type>
 						</Var>
 						<Var>
-							<Name>CrystalGap_Limit_Switches.axisGAP.NcToPlc</Name>
-							<Type GUID="{72F5AAAA-16DF-4ED3-8367-F6C8C3ADAE99}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
-						</Var>
-						<Var>
-							<Name>CrystalGap_Limit_Switches.biLimBwd_CrysGap</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>CrystalGap_Limit_Switches.biLimFwd_AirPitch</Name>
-							<Comment><![CDATA[ Stuff for testing cage deflection 			]]></Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>CrystalGap_Limit_Switches.biLimBwd_AirPitch</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>CrystalGap_Limit_Switches.I_moter_Gap</Name>
+							<Name>CrystalGap_Limit_Switches.fbtestGAP.nMotorLoad</Name>
+							<Comment><![CDATA[default Info data 1]]></Comment>
 							<Type>UINT</Type>
 						</Var>
 						<Var>
@@ -2673,11 +2678,6 @@ External Setpoint Generation:
 						<Var>
 							<Name>CrystalGap_Limit_Switches.fbtestGAP.nEncoderCount</Name>
 							<Type>ULINT</Type>
-						</Var>
-						<Var>
-							<Name>CrystalGap_Limit_Switches.fbtestGAP.nMotorLoad</Name>
-							<Comment><![CDATA[default Info data 1]]></Comment>
-							<Type>UINT</Type>
 						</Var>
 						<Var>
 							<Name>CrystalGap_Limit_Switches.fbtest.nMotorLoad</Name>
@@ -2697,11 +2697,11 @@ External Setpoint Generation:
 					<Vars VarGrpType="2">
 						<Name>PlcTask Outputs</Name>
 						<Var>
-							<Name>MAIN.axis.PlcToNc</Name>
+							<Name>AirPitch_Limit_Switches.axisAirPitch.PlcToNc</Name>
 							<Type GUID="{63A84524-72E3-41C8-BEAB-4CCE44690A13}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 						</Var>
 						<Var>
-							<Name>AirPitch_Limit_Switches.axisAirPitch.PlcToNc</Name>
+							<Name>MAIN.axis.PlcToNc</Name>
 							<Type GUID="{63A84524-72E3-41C8-BEAB-4CCE44690A13}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 						</Var>
 						<Var>

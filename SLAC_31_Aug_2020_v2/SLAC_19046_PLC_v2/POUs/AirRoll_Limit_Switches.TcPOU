@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.3">
   <POU Name="AirRoll_Limit_Switches" Id="{35ebaa59-a632-436e-9b79-d8f83a56aa48}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM AirRoll_Limit_Switches
 
@@ -22,8 +22,8 @@ END_VAR
 fbtest(
 	axis:=axisAirRoll , 
 	fTargetVelocity:=0.24 , 
-	fStartPosition:= -4.8, 
-	fEndPosition:= 6.1 , 
+	fStartPosition:= -4.82, 
+	fEndPosition:= 6.22 , 
 	nDivisions:= 20 , 
 	fbAxisPower:= fbAxisPowerAirRoll );
 
@@ -41,12 +41,5 @@ fbAxisPowerAirRoll(
     Error=> ,
     ErrorID=> );]]></ST>
     </Implementation>
-    <LineIds Name="AirRoll_Limit_Switches">
-      <LineId Id="44" Count="0" />
-      <LineId Id="47" Count="5" />
-      <LineId Id="45" Count="1" />
-      <LineId Id="19" Count="11" />
-      <LineId Id="5" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>
